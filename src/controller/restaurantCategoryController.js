@@ -25,7 +25,12 @@ exports.findOne = (req, res) => {
 exports.create = (req, res) => {
     const data = req.body;
 
-    const newRestaurantCategory = new RestaurantCategory(data)
+    if(!data.name) return res.status(400)
+    .json({Message: "missing name of restaurant category"})
+
+    const newRestaurantCategory = new RestaurantCategory({
+        name: data.name,
+    })
 
     newRestaurantCategory.save()
         .then((newRestaurantCategory => {

@@ -1,9 +1,9 @@
-const { Restaurant } = require('../mongo')
+const { Restaurant, RestaurantCategory, Course, Dish } = require('../mongo')
 
 exports.findAll = (req, res) => {
 
     const handleSuccess = (resto) => {
-        res.status(200).json(resto)
+        res.status(200).json(resto);
     };
     const handleError = error => {
         res.status(500).json(error);
@@ -25,9 +25,24 @@ exports.findOne = (req, res) => {
 exports.create = (req, res) => {
     const data = req.body;
 
-    const newRestaurant = new Restaurant(data)
+    RestaurantCategory.findById(data.RestaurantCategory)
+        .then(restoCat => {
+            if (!data.name) return res.status(400).json({ Message: "Missing restaurant name" })
 
-    newRestaurant.save()
+            const newRestaurant = new Restaurant({
+                name: data.name,
+                restaurantDescription: data.restaurantDescription,
+                open: data.open,
+                address: {
+                    number: data.address.number,
+                    street: data.address.street,
+                    zipcode: data.address.zipcode
+                },
+                RestaurantCategory: restoCat._id,
+            })
+
+            newRestaurant.save()
+        })
         .then((newRestaurant => {
             res.status(201).json({
                 Message: "Your new restaurant was created Succesfully", newRestaurant
