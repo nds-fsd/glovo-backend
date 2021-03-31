@@ -27,7 +27,7 @@ exports.create = (req, res) => {
 
     RestaurantCategory.findById(data.RestaurantCategory)
         .then(restoCat => {
-            if (!data.name) return res.status(400).json({ Message: "Missing restaurant name" })
+            if (!data.name || isNaN(data.address.number)) return res.status(400).json({ Message: "Missing restaurant name" })
 
             const newRestaurant = new Restaurant({
                 name: data.name,

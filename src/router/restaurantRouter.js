@@ -3,14 +3,14 @@ const {RestaurantController} = require('../controller')
 
 const RestaurantRouter = express.Router()
 
-RestaurantRouter.get('/restaurantInfo', RestaurantController.findAll);
+RestaurantRouter.get('/', RestaurantController.findAll);
 
-RestaurantRouter.get('/restaurantInfo/:id', RestaurantController.findOne);
+RestaurantRouter.get('/:id', RestaurantController.findOne);
 
-RestaurantRouter.post('/restaurantInfo', RestaurantController.create);
+RestaurantRouter.post('/', RestaurantController.create);
 
-RestaurantRouter.put('/restaurantInfo/:id', RestaurantController.update);
+RestaurantRouter.put('/:id', RestaurantController.update);
 
-RestaurantRouter.post('/restaurantInfo/search', RestaurantController.search)
+RestaurantRouter.post('/search', RestaurantController.search)
 
 module.exports = {RestaurantRouter}
