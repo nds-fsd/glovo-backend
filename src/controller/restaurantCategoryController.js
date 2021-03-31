@@ -1,21 +1,21 @@
-const { Restaurant } = require('../mongo')
+const {RestaurantCategory} = require('../mongo');
 
 exports.findAll = (req, res) => {
 
-    const handleSuccess = (resto) => {
-        res.status(200).json(resto)
+    const handleSuccess = (restoCat) => {
+        res.status(200).json(restoCat)
     };
     const handleError = error => {
         res.status(500).json(error);
     }
-    Restaurant.find().then(handleSuccess).catch(handleError);
+    RestaurantCategory.find().then(handleSuccess).catch(handleError);
 }
 
 exports.findOne = (req, res) => {
 
     const id = req.params.id;
-    Restaurant.findById(id).then((resto) => {
-        res.status(200).json(resto);
+    RestaurantCategory.findById(id).then((restoCat) => {
+        res.status(200).json(restoCat);
     }).catch(error => {
         res.status(500).json(error);
     });
@@ -25,12 +25,12 @@ exports.findOne = (req, res) => {
 exports.create = (req, res) => {
     const data = req.body;
 
-    const newRestaurant = new Restaurant(data)
+    const newRestaurantCategory = new RestaurantCategory(data)
 
-    newRestaurant.save()
-        .then((newRestaurant => {
+    newRestaurantCategory.save()
+        .then((newRestaurantCategory => {
             res.status(201).json({
-                Message: "Your new restaurant was created Succesfully", newRestaurant
+                Message: "Your new category was created Succesfully", newRestaurantCategory
             })
         }))
         .catch(error => { res.status(500).json(error) })
@@ -38,9 +38,9 @@ exports.create = (req, res) => {
 
 exports.delete = (req, res) => {
     const id = req.params.id;
-    Restaurant.findByIdAndDelete(id)
+    RestaurantCategory.findByIdAndDelete(id)
         .then(() => {
-            res.status(200).json({ message: "Your restaurant has been deleted Succesfully" })
+            res.status(200).json({ message: "Your category has been deleted Succesfully" })
         })
         .catch(error => {
             res.status(500).json(error);
@@ -51,10 +51,10 @@ exports.update = (req, res) => {
     const id = req.params.id;
     const data = req.body;
 
-    Restaurant.findByIdAndUpdate(id, data)
+    RestaurantCategory.findByIdAndUpdate(id, data)
         .then(() => {
             res.status(200).json({
-                message: "Your restaurant has been updated Succesfully"
+                message: "Your category has been updated Succesfully"
             })
         })
         .catch(error => {
@@ -65,7 +65,7 @@ exports.update = (req, res) => {
 exports.search = (req, res) => {
     const data = req.body;
 
-    Restaurant.find(data)
+    RestaurantCategory.find(data)
         .then(objects => {
             res.status(200).json(objects);
         })
