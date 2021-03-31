@@ -1,19 +1,19 @@
 const express = require('express');
 
-const {RestaurantCatergoryController} = require('../controller');
+const {RestaurantCategoryController} = require('../controller');
 
-const RestaurantCatergoryRouter = express.Router();
+const RestaurantCategoryRouter = express.Router();
 
-RestaurantCatergoryRouter.get('/', RestaurantCatergoryController.findAll);
+RestaurantCategoryRouter.get('/', RestaurantCategoryController.findAll);
 
-RestaurantCatergoryRouter.get('/:id', RestaurantCatergoryController.findOne);
+RestaurantCategoryRouter.get('/:id', RestaurantCategoryController.findOne);
 
-RestaurantCatergoryRouter.post('/', RestaurantCatergoryController.create);
+RestaurantCategoryRouter.post('/', RestaurantCategoryController.create);
 
-RestaurantCatergoryRouter.put('/:id', RestaurantCatergoryController.update);
+RestaurantCategoryRouter.put('/:id', RestaurantCategoryController.update);
 
-RestaurantCatergoryRouter.delete('/:id', RestaurantCatergoryController.delete);
+RestaurantCategoryRouter.delete('/:id', RestaurantCategoryController.delete);
 
-RestaurantCatergoryRouter.post('/search', RestaurantCatergoryController.search);
+RestaurantCategoryRouter.post('/search', RestaurantCategoryController.search);
 
-module.exports = {RestaurantCatergoryRouter}
+module.exports = {RestaurantCategoryRouter}
