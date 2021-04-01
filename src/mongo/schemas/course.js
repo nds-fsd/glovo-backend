@@ -1,10 +1,21 @@
 const mongoose = require('mongoose');
 
-const schema = new mongoose.Schema({
+const courseSchema = new mongoose.Schema({
     name: {type: String, required: true},
     Restaurant: { type: mongoose.Schema.Types.ObjectId, required: true }
-});
+},
+{
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true } 
+  });
     
-    const Course = mongoose.model("Course", schema);
+courseSchema.virtual('dishList', {
+    ref: 'Dish',
+    localField: '_id',
+    foreignField: 'Course', 
+    justOne: false,
+  });
+
+    const Course = mongoose.model("Course", courseSchema);
 
     module.exports = Course;

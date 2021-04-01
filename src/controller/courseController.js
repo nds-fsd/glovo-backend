@@ -100,3 +100,18 @@ exports.search = (req, res) => {
     res.status(500).json(error);
   });
 }
+
+exports.coursesWithDishes = (req, res) => {
+    const id = req.params.id;
+
+    Restaurant.findById(id)
+    .then(rest => {
+        if (!rest) return Promise.reject('Problem finding restaurant');
+        Course.find({Restaurant: rest._id}).populate('dishList').exec((error, dishes) => {
+            if (error) return Promise.reject('Problem populating courses');;
+            res.status(200).json(dishes);
+          })
+    })
+    
+    .catch(error => { res.status(500).json({message: error})});
+}
