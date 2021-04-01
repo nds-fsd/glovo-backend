@@ -14,7 +14,6 @@ DishRouter.put('/:id', DishController.update);
 
 DishRouter.delete('/:id', DishController.deleteDish);
 
-
 DishRouter.post('/search', DishController.search);
 
 module.exports = {DishRouter}

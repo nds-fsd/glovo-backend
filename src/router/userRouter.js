@@ -1,5 +1,5 @@
 const express = require('express');
-const {UserController} = require('../controller')
+const { UserController } = require('../controller')
 
 const UserRouter = express.Router();
 
@@ -16,4 +16,4 @@ UserRouter.patch('/:id', UserController.update);
 
 UserRouter.post('/search', UserController.search);
 
-module.exports = {UserRouter};
+module.exports = { UserRouter };
