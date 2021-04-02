@@ -6,6 +6,11 @@ const descriptions = ["description 1","description 2","description 3","descripti
 const courses = ["course 1","course 2","course 3","course 4","course 5"]
 const dishes = ["dish 1","dish 2","dish 3","dish 4","dish 5"]
 const ranInd = Math.floor(Math.random() * descriptions.length);
+
+
+// with an ID passed in the body as {category: id of the restocategory}
+//This Controller creates a Random Restaurant with 5 Courses and 5 dishes on each.
+
 exports.createRes = (req, res) =>{
     const data = req.body
     RestaurantCategory.findById(data.category)

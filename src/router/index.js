@@ -16,6 +16,7 @@ appRouter.use('/restaurant', RestaurantRouter);
 appRouter.use('/restaurantCategory', RestaurantCategoryRouter);
 appRouter.use('/course', CourseRouter);
 appRouter.use('/dish', DishRouter);
+//The creation router is to create a random restaurant linked to a specific resto category
 appRouter.use('/create', CreationRouter);
 
 
