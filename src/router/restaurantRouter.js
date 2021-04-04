@@ -11,6 +11,8 @@ RestaurantRouter.post('/', RestaurantController.create);
 
 RestaurantRouter.put('/:id', RestaurantController.update);
 
-RestaurantRouter.post('/search', RestaurantController.search)
+RestaurantRouter.post('/search', RestaurantController.search);
+
+RestaurantRouter.delete('/:id', RestaurantController.delete);
 
 module.exports = {RestaurantRouter}
