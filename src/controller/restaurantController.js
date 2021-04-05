@@ -12,13 +12,17 @@ exports.findAll = (req, res) => {
 }
 
 exports.findOne = (req, res) => {
-
     const id = req.params.id;
-    Restaurant.findById(id).then((resto) => {
-        res.status(200).json(resto);
-    }).catch(error => {
-        res.status(500).json(error);
-    });
+    Restaurant.findById(id).populate({
+        path: 'courseList',
+        populate: {
+            path: 'dishList'
+        }
+    })
+    .exec((error, dishes) => {
+        if (error) return res.status(500).json({message: error});
+        res.status(200).json(dishes);
+      });
 }
 
 
@@ -51,16 +55,39 @@ exports.create = (req, res) => {
         .catch(error => { res.status(500).json(error) })
 }
 
-exports.delete = (req, res) => {
+exports.delete = (req,res) => {
     const id = req.params.id;
     Restaurant.findByIdAndDelete(id)
-        .then(() => {
-            res.status(200).json({ message: "Your restaurant has been deleted Succesfully" })
+    .then((restaurant) => {
+        if(restaurant === null ) return Promise.reject('Restaurant not Found');
+        Course.deleteMany({ Restaurant: restaurant._id },(err,query)=>{
+            if(err) {
+               return console.log("Problem trying to delete the courses")
+            }
+                console.log("Courses deleted")
+            Dish.deleteMany({ Restaurant: restaurant._id },(err,query) => {
+                if(err) {
+                    return console.log("Problem trying to delete the dishes")
+                 }
+                 return console.log("dishes deleted")
+            } )
         })
-        .catch(error => {
-            res.status(500).json(error);
+    })
+    .then(() => {
+      res.status(200).json({
+        confirmation: "Success",
+        message: `The Restaurant has been deleted` ,
         })
-}
+    })
+    .catch(error=>{
+        if(error === 'Restaurant not Found') {
+            return res.status(404).json({message: error});
+        } else {
+            return res.status(500).json({message: error});
+        }
+      
+    })
+    }
 
 exports.update = (req, res) => {
     const id = req.params.id;

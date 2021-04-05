@@ -16,7 +16,7 @@ exports.createRes = (req, res) =>{
     RestaurantCategory.findById(data.category)
     .then(category => {
         const newRestaurant = new Restaurant({
-            name: `Test ${category.name} restaurant ${Math.floor(Math.random() * (100 - 1) + 1)}`,
+            name: `Test ${category.name} DOUBLE REFFFFFFFFF ${Math.floor(Math.random() * (100 - 1) + 1)}`,
             restaurantDescription: `${descriptions[ranInd]}`,
             open: true,
             address: {
@@ -39,7 +39,8 @@ exports.createRes = (req, res) =>{
                         const newDish = new Dish({
                             name: `${dish} ${newCourse.name}`,
                             price: (22 + index),
-                            Course: newCourse._id
+                            Course: newCourse._id,
+                            Restaurant: newRestaurant._id,
                         })
                         newDish.save((err) => {
                             if (err) return Promise.reject('Error creating dishes');
