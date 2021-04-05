@@ -12,13 +12,17 @@ exports.findAll = (req, res) => {
 }
 
 exports.findOne = (req, res) => {
-
     const id = req.params.id;
-    Restaurant.findById(id).then((resto) => {
-        res.status(200).json(resto);
-    }).catch(error => {
-        res.status(500).json(error);
-    });
+    Restaurant.findById(id).populate({
+        path: 'courseList',
+        populate: {
+            path: 'dishList'
+        }
+    })
+    .exec((error, dishes) => {
+        if (error) return res.status(500).json({message: error});
+        res.status(200).json(dishes);
+      });
 }
 
 
