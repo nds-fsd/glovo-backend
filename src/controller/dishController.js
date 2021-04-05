@@ -1,4 +1,4 @@
-const { Course } = require('../mongo');
+const { Course, Dish } = require('../mongo');
 
 
 exports.findAll = (req, res) =>{
@@ -21,12 +21,12 @@ exports.findOne = (req, res) =>{
   });
 }
 
-
 exports.create = (req, res) => {
   const data = req.body;
+
   Course.findById(data.Course)
   .then(course => {
-    if(!data.name) return res.status(400).json({Message: "Missing name of Dish",});
+    if(!data.name) return Promise.reject('Missing Dish Name');
     const newDish = new Dish({
       name: data.name, 
       price: data.price,
@@ -35,7 +35,7 @@ exports.create = (req, res) => {
     newDish.save();
   })
   .then((newDish)=> { res.status(201).json({Message: "Your new dish was created Succesfully", newDish})})
-  .catch(error => { res.status(500).json(error)});
+  .catch(error => { res.status(500).json({message: error})});
 
 }
 

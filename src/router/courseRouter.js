@@ -18,4 +18,6 @@ CourseRouter.delete('/deleteAll/:id', CourseController.deleteCoursesAndDishes)
 
 CourseRouter.post('/search', CourseController.search);
 
+CourseRouter.get('/all/:id', CourseController.coursesWithDishes);
+
 module.exports = {CourseRouter}
