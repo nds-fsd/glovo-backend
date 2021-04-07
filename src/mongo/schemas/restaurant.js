@@ -5,7 +5,7 @@ const restaurantSchema = new mongoose.Schema({
     restaurantDescription: {type: String},
     open: {type: Boolean, required: true},
     address: {
-        number: {type: Number, required: true},
+        number: {},
         street:{type: String, required: true},
         zipcode:{type: Number, required: true}
     },
