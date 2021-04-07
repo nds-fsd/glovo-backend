@@ -31,7 +31,7 @@ exports.create = (req, res) => {
 
     RestaurantCategory.findById(data.RestaurantCategory)
         .then(restoCat => {
-            if (!data.name || isNaN(data.address.number)) return res.status(400).json({ Message: "Missing restaurant name" })
+            if (!data.name || isNaN(data.address.number)) return Promise.reject("Missing restaurant details");
 
             const newRestaurant = new Restaurant({
                 name: data.name,
@@ -45,14 +45,12 @@ exports.create = (req, res) => {
                 RestaurantCategory: restoCat._id,
             })
 
-            newRestaurant.save()
+            return newRestaurant.save()
         })
-        .then((newRestaurant => {
-            res.status(201).json({
-                Message: "Your new restaurant was created Succesfully", newRestaurant
-            })
-        }))
-        .catch(error => { res.status(500).json(error) })
+        .then((newRestaurant) => {
+            res.status(201).json(newRestaurant)
+        })
+        .catch(error => { res.status(500).json({message: error}) })
 }
 
 exports.delete = (req,res) => {

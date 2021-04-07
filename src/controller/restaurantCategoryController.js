@@ -8,7 +8,7 @@ exports.findAll = (req, res) => {
     const handleError = error => {
         res.status(500).json(error);
     }
-    RestaurantCategory.find().then(handleSuccess).catch(handleError);
+    RestaurantCategory.find().sort({ name: 1 }).then(handleSuccess).catch(handleError);
 }
 
 exports.findOne = (req, res) => {
