@@ -9,7 +9,8 @@ const restaurantSchema = new mongoose.Schema({
         street:{type: String, required: true},
         zipcode:{type: Number, required: true}
     },
-    RestaurantCategory: { type: mongoose.Schema.Types.ObjectId, required: true },
+    RestaurantCategory: { type: mongoose.Schema.Types.ObjectId, ref:'RestaurantCategory',
+     required: true}, 
 },
 {
     toJSON: { virtuals: true },
