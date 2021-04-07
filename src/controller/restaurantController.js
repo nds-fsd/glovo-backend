@@ -13,18 +13,19 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Restaurant.findById(id).populate({
+    Restaurant.findById(id)
+    .populate('RestaurantCategory')
+    .populate({
         path: 'courseList',
         populate: {
             path: 'dishList'
-        }
+        },
     })
-    .exec((error, dishes) => {
-        if (error) return res.status(500).json({message: error});
-        res.status(200).json(dishes);
-      });
-}
-
+        .exec((error, dishes) => {
+            if (error) return res.status(500).json({ message: error });
+            res.status(200).json(dishes);
+        })    
+};
 
 exports.create = (req, res) => {
     const data = req.body;
@@ -53,39 +54,39 @@ exports.create = (req, res) => {
         .catch(error => { res.status(500).json({message: error}) })
 }
 
-exports.delete = (req,res) => {
+exports.delete = (req, res) => {
     const id = req.params.id;
     Restaurant.findByIdAndDelete(id)
-    .then((restaurant) => {
-        if(restaurant === null ) return Promise.reject('Restaurant not Found');
-        Course.deleteMany({ Restaurant: restaurant._id },(err,query)=>{
-            if(err) {
-               return console.log("Problem trying to delete the courses")
-            }
+        .then((restaurant) => {
+            if (restaurant === null) return Promise.reject('Restaurant not Found');
+            Course.deleteMany({ Restaurant: restaurant._id }, (err, query) => {
+                if (err) {
+                    return console.log("Problem trying to delete the courses")
+                }
                 console.log("Courses deleted")
-            Dish.deleteMany({ Restaurant: restaurant._id },(err,query) => {
-                if(err) {
-                    return console.log("Problem trying to delete the dishes")
-                 }
-                 return console.log("dishes deleted")
-            } )
+                Dish.deleteMany({ Restaurant: restaurant._id }, (err, query) => {
+                    if (err) {
+                        return console.log("Problem trying to delete the dishes")
+                    }
+                    return console.log("dishes deleted")
+                })
+            })
         })
-    })
-    .then(() => {
-      res.status(200).json({
-        confirmation: "Success",
-        message: `The Restaurant has been deleted` ,
+        .then(() => {
+            res.status(200).json({
+                confirmation: "Success",
+                message: `The Restaurant has been deleted`,
+            })
         })
-    })
-    .catch(error=>{
-        if(error === 'Restaurant not Found') {
-            return res.status(404).json({message: error});
-        } else {
-            return res.status(500).json({message: error});
-        }
-      
-    })
-    }
+        .catch(error => {
+            if (error === 'Restaurant not Found') {
+                return res.status(404).json({ message: error });
+            } else {
+                return res.status(500).json({ message: error });
+            }
+
+        })
+}
 
 exports.update = (req, res) => {
     const id = req.params.id;
