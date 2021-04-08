@@ -5,11 +5,11 @@ const restaurantSchema = new mongoose.Schema({
     restaurantDescription: {type: String},
     open: {type: Boolean, required: true},
     address: {
-        number: {},
+        number: {type: String, required: true},
         street:{type: String, required: true},
         zipcode:{type: Number, required: true}
     },
-    RestaurantCategory: { type: mongoose.Schema.Types.ObjectId, ref:'RestaurantCategory',
+    restaurantCategory: { type: mongoose.Schema.Types.ObjectId, ref:'RestaurantCategory',
      required: true}, 
 },
 {

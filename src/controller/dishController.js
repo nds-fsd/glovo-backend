@@ -31,6 +31,7 @@ exports.create = (req, res) => {
       name: data.name, 
       price: data.price,
       Course: course._id,
+      Restaurant: course.Restaurant,
     })
     newDish.save();
   })
