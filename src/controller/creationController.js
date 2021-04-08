@@ -24,7 +24,7 @@ exports.createRes = (req, res) =>{
                 street: `${streets[ranInd]}`,
                 zipcode: `${Math.floor(Math.random() * (19000 - 10000) + 10000)}`
             },
-            RestaurantCategory: category._id,
+            restaurantCategory: category._id,
         })
         newRestaurant.save((err) => {
             if (err) return Promise.reject('Error Creating Restaurant', err);

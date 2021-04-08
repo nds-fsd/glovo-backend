@@ -14,7 +14,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
     Restaurant.findById(id)
-    .populate('RestaurantCategory')
+    .populate('restaurantCategory')
     .populate({
         path: 'courseList',
         populate: {
@@ -30,9 +30,13 @@ exports.findOne = (req, res) => {
 exports.create = (req, res) => {
     const data = req.body;
 
-    RestaurantCategory.findById(data.RestaurantCategory)
+    if(data.restaurantCategory === undefined) {
+        return res.status(400).json({message: 'empty restaurantCategory'});
+    }
+
+    RestaurantCategory.findById(data.restaurantCategory)
         .then(restoCat => {
-            if (!data.name || isNaN(data.address.number)) return Promise.reject("Missing restaurant details");
+            if (!data.name || isNaN(data.address.number)) return res.status(400).json({ Message: "Missing restaurant name" })
 
             const newRestaurant = new Restaurant({
                 name: data.name,
@@ -43,15 +47,16 @@ exports.create = (req, res) => {
                     street: data.address.street,
                     zipcode: data.address.zipcode
                 },
-                RestaurantCategory: restoCat._id,
+                restaurantCategory: restoCat._id,
             })
 
-            return newRestaurant.save()
+            newRestaurant.save()
+            return newRestaurant;
         })
         .then((newRestaurant) => {
             res.status(201).json(newRestaurant)
         })
-        .catch(error => { res.status(500).json({message: error}) })
+        .catch(error => { res.status(500).json(error) })
 }
 
 exports.delete = (req, res) => {
