@@ -7,7 +7,7 @@
     "devStart": "nodemon src/index.js",
     "start": "node src/index.js"
   },
-  "author": "Jose Manuel Cano",
+  "author": "Patricio, Milena, Felix",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "5.0.1",
