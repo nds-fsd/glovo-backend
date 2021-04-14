@@ -16,4 +16,6 @@ DishRouter.delete('/:id', DishController.deleteDish);
 
 DishRouter.post('/search', DishController.search);
 
+DishRouter.post('/change', DishController.switchCourse);
+
 module.exports = {DishRouter}

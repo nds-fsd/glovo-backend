@@ -76,3 +76,19 @@ exports.search = (req, res) => {
     res.status(500).json(error);
   });
 }
+//recieves {newCourse: 'the collection where to move', dishId: 'the id of the moving dish'}
+exports.switchCourse = (req,res) => {
+  const data = req.body;
+  if(!data.newCourse || !data.dishId){
+    return res.status(400).json({message: 'no Course or Dish provided'});
+  }
+  Course.findById(data.newCourse,(err,cour) => {
+    if (err) return res.status(500).json({message: 'problem looking for course'});
+    Dish.findByIdAndUpdate(data.dishId,{Course: cour._id},(err,dish)=>{
+      if (err) return res.status(500).json({message: 'Problem changing id'});
+      console.log('dish updated', dish)
+      res.status(200).json({message: 'task updated', dish})
+    })
+  })
+  
+}
