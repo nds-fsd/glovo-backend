@@ -16,7 +16,7 @@ exports.createRes = (req, res) =>{
     RestaurantCategory.findById(data.category)
     .then(category => {
         const newRestaurant = new Restaurant({
-            name: `Test ${category.name} DOUBLE REFFFFFFFFF ${Math.floor(Math.random() * (100 - 1) + 1)}`,
+            name: `Test ${category.name} Random ${Math.floor(Math.random() * (100 - 1) + 1)}`,
             restaurantDescription: `${descriptions[ranInd]}`,
             open: true,
             address: {
