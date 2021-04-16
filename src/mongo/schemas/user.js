@@ -1,10 +1,21 @@
+//in the future we could remove the require field of the address and simply 
+//require during the ordering process
+//sentence[0].toLowerCase() + sentence.slice(1) to ensure that the user name and last 
+//name are in uppercase
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const schema = new mongoose.Schema({
 	email: { type: String, required: true, unique: true},
 	password: {type: String, required: true},
-	name: {type: String, required: true}
+	firstName: {type: String, required: true},
+	lastName: {type: String, required: true},
+	address: {
+        number: {type: String, required: true},
+        street:{type: String, required: true},
+        zipcode:{type: Number, required: true}
+    },
+	role: {type: String, required: true},
 }, {timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
 
