@@ -10,7 +10,9 @@ const restaurantSchema = new mongoose.Schema({
         zipcode:{type: Number, required: true}
     },
     restaurantCategory: { type: mongoose.Schema.Types.ObjectId, ref:'RestaurantCategory',
-     required: true}, 
+      required: true},
+      user:  { type: mongoose.Schema.Types.ObjectId, ref:'User',
+      required: true}
 },
 {
     toJSON: { virtuals: true },

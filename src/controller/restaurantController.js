@@ -1,4 +1,4 @@
-const { Restaurant, RestaurantCategory, Course, Dish } = require('../mongo')
+const { Restaurant, RestaurantCategory, Course, Dish, User } = require('../mongo');
 
 exports.findAll = (req, res) => {
 
@@ -9,7 +9,7 @@ exports.findAll = (req, res) => {
         res.status(500).json(error);
     }
     Restaurant.find().then(handleSuccess).catch(handleError);
-}
+};
 
 exports.findOne = (req, res) => {
     const id = req.params.id;
@@ -27,36 +27,65 @@ exports.findOne = (req, res) => {
         })    
 };
 
+// * Restaurant controller updated to work with JWT
 exports.create = (req, res) => {
     const data = req.body;
 
-    if(data.restaurantCategory === undefined) {
-        return res.status(400).json({message: 'empty restaurantCategory'});
+    // * error to confirm we have a user
+    if(!req.user) {
+        return res.status(400).json({message: 'user not Found'})
     }
+    console.log(req.user);
+    User.findById(req.user.id, (err, user) => {
 
-    RestaurantCategory.findById(data.restaurantCategory)
-        .then(restoCat => {
-            if (!data.name || isNaN(data.address.number)) return res.status(400).json({ Message: "Missing restaurant name" })
+        if (err) {
+            return res.status(500).json({user: err.message})
+        }
 
-            const newRestaurant = new Restaurant({
-                name: data.name,
-                restaurantDescription: data.restaurantDescription,
-                open: data.open,
-                address: {
-                    number: data.address.number,
-                    street: data.address.street,
-                    zipcode: data.address.zipcode
-                },
-                restaurantCategory: restoCat._id,
-            })
+        // * if the user has already a restaurant, he cant create more
+       Restaurant.findOne({user: user._id},(err,restaurant) => {
+           if (err) {
+               return res.status(500).json({message: error});
+           }
+           if(restaurant) {
+               return res.status(400).json({message: "The user has already created a restaurant"});
+           }
 
-            newRestaurant.save()
-            return newRestaurant;
-        })
-        .then((newRestaurant) => {
-            res.status(201).json(newRestaurant)
-        })
-        .catch(error => { res.status(500).json(error) })
+           // * confirm we have restaurant category
+           if(data.restaurantCategory === undefined) {
+               return res.status(400).json({message: 'empty restaurantCategory'});
+           }
+           RestaurantCategory.findById(data.restaurantCategory, (err, category) => {
+               if (err) {
+                   return res.status(500).json({restaurantCategory: err.message})
+               }
+               const newRestaurant = new Restaurant({
+                   name: data.name,
+                   restaurantDescription: data.restaurantDescription,
+                   open: data.open,
+                   address: {
+                       number: data.address.number,
+                       street: data.address.street,
+                       zipcode: data.address.zipcode
+                   },
+                   restaurantCategory: category._id,
+                   user: user._id
+               })
+               newRestaurant.save((err)=>{
+                   if (err){ 
+                       return res.status(500).json({
+                       restaurant: "error creating restaurant",
+                       error: err
+                   });
+               }
+                   if (!restaurant) return res.status(201).json({message: "new Restaurant created successfully", newRestaurant})
+               })
+           })
+       })
+    })
+    .catch((err) => {
+        return res.status(500).json({message: 'major error', err})
+    })
 }
 
 exports.delete = (req, res) => {
