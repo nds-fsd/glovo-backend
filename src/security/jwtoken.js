@@ -23,14 +23,25 @@ authRouter.post('/register',(req,res) => {
         const newUser = new User({
             email: data.email,
             password: data.password,
-            name: data.name
+            firstName: data.firstName,
+            lastName: data.lastName,
+            address: {
+                number: data.address.number,
+                street: data.address.street,
+                zipcode: data.address.zipcode,
+            },
+            role: "CLIENT",
           })
           
         newUser.save()
         .then((createdUser => {
             return res.status(201).json({
                 token: createdUser.generateJWT(), 
-                user: { email: createdUser.email, name: createdUser.name, id: createdUser._id,
+                user: {
+                     email: createdUser.email,
+                     name: createdUser.name, 
+                     id: createdUser._id,
+                     role: createdUser.role
                 }})
         }))
         .catch((err) => {
@@ -65,8 +76,13 @@ authRouter.post('/login', async (req,res) => {
         // * if everything is ok, return the new token and user data
         return res.status(200).json({
             token: user.generateJWT(), 
-            user: { email: user.email, name: user.name, id: user._id,
-            }})
+            user: {
+                 email: user.email,
+                 name: user.name,
+                 id: user._id,
+            },
+            role: user.role,
+        })
     })
     .catch((err) => {
         return res.status(500).json( { error: { register: "Error Login in :(", error: err.message}})
