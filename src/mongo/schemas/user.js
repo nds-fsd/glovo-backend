@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 
+const roles = ['CLIENT','PROVIDER']
 
 const userSchema = new mongoose.Schema({
 	email: { type: String, required: true, unique: true, trim: true},
@@ -36,6 +37,9 @@ userSchema.virtual('restaurant', {
 userSchema.pre('save',  function(next) {
 	const user = this;
 
+	if (!roles.includes(user.role)) {
+		throw new Error(`The role ${user.role}, is not valid`)
+	}
 	//si no se ha cambiado la contraseña, seguimos
 	if (!user.isModified('password')) return next();
 
@@ -80,3 +84,4 @@ const User = mongoose.model('User', userSchema);
 
 
 module.exports = User;
+exports.roles = roles;

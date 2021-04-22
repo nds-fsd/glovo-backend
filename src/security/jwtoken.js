@@ -41,8 +41,9 @@ authRouter.post('/register',(req,res) => {
                      email: createdUser.email,
                      name: createdUser.name, 
                      id: createdUser._id,
-                     role: createdUser.role
-                }})
+                },
+                role: createdUser.role
+            })
         }))
         .catch((err) => {
             return res.status(500).json( { error: { register: "Error creating new User :(", error: err.message}})

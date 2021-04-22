@@ -8,8 +8,6 @@ UserRouter.get('/', UserController.findAll);
 
 UserRouter.get('/:id', UserController.findOne);
 
-UserRouter.post('/', UserController.create);
-
 UserRouter.delete('/:id', UserController.delete);
 
 UserRouter.patch('/:id', UserController.update);
