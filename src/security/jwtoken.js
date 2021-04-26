@@ -12,24 +12,18 @@ authRouter.post('/register',(req,res) => {
 
     // * Make sure request has the email
     if(!email) {
-        return res.status(400).json({ error: { register: "email not recieved"}});
+        return res.status(400).json({ error: { register: "Email not recieved"}});
     }
     User.findOne({email: email})
     // * If the user is found, return an error because there is already a user registered
     .then((user) => {
         if (user) {
-            return res.status(400).json({ error: { register: "email already registered"}})
+            return res.status(400).json({ error: { email: "Email already registered"}})
         }
         const newUser = new User({
             email: data.email,
             password: data.password,
             firstName: data.firstName,
-            lastName: data.lastName,
-            address: {
-                number: data.address.number,
-                street: data.address.street,
-                zipcode: data.address.zipcode,
-            },
             role: "CLIENT",
           })
           
@@ -46,11 +40,11 @@ authRouter.post('/register',(req,res) => {
             })
         }))
         .catch((err) => {
-            return res.status(500).json( { error: { register: "Error creating new User :(", error: err.message}})
+            return res.status(500).json( { error: { firstName: "Error creating new User :("}})
         })
     })
     .catch((err) => {
-        return res.status(500).json( { error: { register: "Error creating new User :(", error: err.message}})
+        return res.status(500).json( { error: { firstName: "Error creating new User :("}})
     })
 });
 

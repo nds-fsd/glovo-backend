@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
     name: {type: String, required: true},
-    Restaurant: { type: mongoose.Schema.Types.ObjectId, required: true }
+    Restaurant: { type: mongoose.Schema.Types.ObjectId, required: true },
+    order: {type: Number, default: -1},
 },
 {
     toJSON: { virtuals: true },
@@ -14,6 +15,7 @@ courseSchema.virtual('dishList', {
     localField: '_id',
     foreignField: 'Course', 
     justOne: false,
+    options: { sort: { order: 1 }}
   });
 
     const Course = mongoose.model("Course", courseSchema);
