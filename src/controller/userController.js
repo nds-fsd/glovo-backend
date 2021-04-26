@@ -21,22 +21,6 @@ exports.findOne = (req, res) =>{
   });
 }
 
-
-exports.create = (req, res) => {
-  const data = req.body;
-
-  const newUser = new User({
-    email: data.email,
-    password: data.password,
-    name: data.name
-  })
-  
-  newUser.save()
-  .then((newUser)=> { res.status(201).json({Message: "Your new User was created Succesfully", newUser})})
-  .catch(error => { res.status(500).json(error)});
-
-}
-
 exports.delete = (req,res) => {
   const id = req.params.id;
   User.findByIdAndDelete(id)

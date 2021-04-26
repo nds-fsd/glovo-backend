@@ -18,4 +18,6 @@ DishRouter.post('/search', DishController.search);
 
 DishRouter.post('/change', DishController.switchCourse);
 
+DishRouter.post('/same', DishController.dishesOrder);
+
 module.exports = {DishRouter}
