@@ -20,4 +20,6 @@ CourseRouter.post('/search', CourseController.search);
 
 CourseRouter.get('/all/:id', CourseController.coursesWithDishes);
 
+CourseRouter.post('/change', CourseController.coursesOrder);
+
 module.exports = {CourseRouter}

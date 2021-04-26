@@ -23,6 +23,7 @@ restaurantSchema.virtual('courseList', {
     localField: '_id',
     foreignField: 'Restaurant', 
     justOne: false,
+    options: { sort: { order: 1 }}
   });
     
     const Restaurant = mongoose.model("Restaurant", restaurantSchema);

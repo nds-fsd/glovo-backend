@@ -115,3 +115,18 @@ exports.coursesWithDishes = (req, res) => {
     
     .catch(error => { res.status(500).json({message: error})});
 }
+
+exports.coursesOrder = (req,res) => {
+  const { course, newOrder } = req.body;
+
+  if ( !course ) {
+    return res.status(400).json({message: 'missing course or restaurant'})
+  }
+  newOrder.forEach((course) => {
+    Course.findById(course.id, function (err, doc) {
+      if (err) return res.status(500).json({message: 'ALgo fallo'})
+      doc.order = course.newPos;
+      doc.save();
+    });
+    })
+}
