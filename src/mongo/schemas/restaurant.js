@@ -9,9 +9,9 @@ const restaurantSchema = new mongoose.Schema({
         street:{type: String, required: true},
         zipcode:{type: Number, required: true}
     },
-    restaurantCategory: { type: mongoose.Schema.Types.ObjectId, ref:'RestaurantCategory',
-      required: true},
-      user:  { type: mongoose.Schema.Types.ObjectId, ref:'User',
+    restaurantCategory: [{ type: mongoose.Schema.Types.ObjectId, ref:'RestaurantCategory',
+      required: true}],
+    user:  { type: mongoose.Schema.Types.ObjectId, ref:'User',
       required: true}
 },
 {
