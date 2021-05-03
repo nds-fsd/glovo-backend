@@ -32,11 +32,11 @@ exports.create = (req, res) => {
     const data = req.body;
 
     // * error to confirm we have a user
-    if(!req.user) {
+    if(!data.user) {
         return res.status(400).json({message: 'user not Found'})
     }
-    console.log(req.user);
-    User.findById(req.user.id, (err, user) => {
+    
+    User.findById(data.user, (err, user) => {
 
         if (err) {
             return res.status(500).json({user: err.message})
@@ -47,18 +47,12 @@ exports.create = (req, res) => {
            if (err) {
                return res.status(500).json({message: error});
            }
-           if(restaurant) {
-               return res.status(400).json({message: "The user has already created a restaurant"});
-           }
 
            // * confirm we have restaurant category
-           if(data.restaurantCategory === undefined) {
+           if(data.restaurantCategory.length === 0) {
                return res.status(400).json({message: 'empty restaurantCategory'});
            }
-           RestaurantCategory.findById(data.restaurantCategory, (err, category) => {
-               if (err) {
-                   return res.status(500).json({restaurantCategory: err.message})
-               }
+           
                const newRestaurant = new Restaurant({
                    name: data.name,
                    restaurantDescription: data.restaurantDescription,
@@ -68,7 +62,7 @@ exports.create = (req, res) => {
                        street: data.address.street,
                        zipcode: data.address.zipcode
                    },
-                   restaurantCategory: category._id,
+                   restaurantCategory: data.restaurantCategory,
                    user: user._id
                })
                newRestaurant.save((err)=>{
@@ -79,8 +73,7 @@ exports.create = (req, res) => {
                    });
                }
                    if (!restaurant) return res.status(201).json({message: "new Restaurant created successfully", newRestaurant})
-               })
-           })
+            })
        })
     })
     .catch((err) => {
