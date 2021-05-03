@@ -11,7 +11,7 @@ const server = app.listen(process.env.PORT, () => {
 });
 
 const appRouter = require('./router');
-// configureSecurity(app);
+configureSecurity(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
