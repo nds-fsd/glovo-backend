@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { schema } = require('./user');
 
 const restaurantSchema = new mongoose.Schema({
     name: {type: String, required: true},
@@ -25,6 +26,8 @@ restaurantSchema.virtual('courseList', {
     justOne: false,
     options: { sort: { order: 1 }}
   });
+
+    schema.index({name:'text', restaurantDescription:'text'})
     
     const Restaurant = mongoose.model("Restaurant", restaurantSchema);
 

@@ -30,7 +30,7 @@ exports.findOne = (req, res) => {
 // * Restaurant controller updated to work with JWT
 exports.create = (req, res) => {
     const data = req.body;
-
+    console.log(data)
     // * error to confirm we have a user
     if(!req.user) {
         return res.status(400).json({message: 'user not Found'})
@@ -147,4 +147,24 @@ exports.search = (req, res) => {
         .catch(error => {
             res.status(500).json(error);
         });
+}
+
+exports.researchA = (req, res) => {
+    const data = req.body;
+
+    const searchText = Object.keys(data)
+    .reduce((acc, cur) => (`${acc} ${data[cur]}`), '')
+
+    const query = {$text: { $search: searchText }};
+
+    console.log(query);
+
+    Restaurant.find(query, {score: {$meta: "textScore"}})
+    .sort({score: {$meta: "textScore"}})
+    .then(objects => {
+        res.status(200).json(objects);
+    })
+    .catch(error => {
+        res.status(500).json(error);
+    })
 }

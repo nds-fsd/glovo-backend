@@ -1,4 +1,5 @@
-const {RestaurantCategory} = require('../mongo');
+const {RestaurantCategory, Restaurant} = require('../mongo');
+const {RestaurantController} = require('../controller');
 
 exports.findAll = (req, res) => {
 
@@ -77,4 +78,19 @@ exports.search = (req, res) => {
         .catch(error => {
             res.status(500).json(error);
         });
+}
+
+exports.nameSearch = (req, res) => {
+    const data = req.body;
+    RestaurantCategory.find(data)
+        .then(objects => {
+            Restaurant.find({restaurantCategory: objects[0]._id})
+            .then(object => {
+                res.status(200).json(object);
+            })
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        });
+        
 }

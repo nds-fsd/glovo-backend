@@ -16,4 +16,6 @@ RestaurantCategoryRouter.delete('/:id', RestaurantCategoryController.delete);
 
 RestaurantCategoryRouter.post('/search', RestaurantCategoryController.search);
 
+RestaurantCategoryRouter.post('/nameSearch', RestaurantCategoryController.nameSearch);
+
 module.exports = {RestaurantCategoryRouter}
