@@ -16,7 +16,6 @@ const restaurantSchema = new mongoose.Schema({
       required: true},
       rating: {type: String},
       priceRating: {type: String},
-      timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
       deliveryTime: {type: String},
       deliveryCost: {type: String},
       coordinates: {
@@ -27,9 +26,10 @@ const restaurantSchema = new mongoose.Schema({
         type: {
           type: String,
           enum: ['Point']
-        }}
+        }},
 
 },
+{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }},
 {
     toJSON: { virtuals: true },
     toObject: { virtuals: true } 

@@ -6,7 +6,12 @@ const descriptions = ["description 1","description 2","description 3","descripti
 const courses = ["course 1","course 2","course 3","course 4","course 5"]
 const dishes = ["dish 1","dish 2","dish 3","dish 4","dish 5"]
 const ranInd = Math.floor(Math.random() * descriptions.length);
-
+const ranGrade = Math.floor(Math.random() * 6);
+const priceRating = () => {if ( ranGrade === 1 || ranGrade === 3) {
+    return "$$" 
+    } else if (ranGrade === 2 || ranGrade === 3) {
+        return "$$$"
+    } else { return "$$$$" }}
 
 // with an ID passed in the body as {category: id of the restocategory}
 //This Controller creates a Random Restaurant with 5 Courses and 5 dishes on each.
@@ -26,6 +31,11 @@ exports.createRes = (req, res) =>{
                 zipcode: `${Math.floor(Math.random() * (19000 - 10000) + 10000)}`
             },
             restaurantCategory: category._id,
+            user: data.userId,
+            rating: ranGrade,
+            priceRating: priceRating(),
+            deliveryTime: "35-45′",
+            deliveryCost: "4,99 €"
         })
         newRestaurant.save((err) => {
             if (err) return Promise.reject('Error Creating Restaurant', err);
