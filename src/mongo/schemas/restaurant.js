@@ -13,8 +13,23 @@ const restaurantSchema = new mongoose.Schema({
     restaurantCategory: [{ type: mongoose.Schema.Types.ObjectId, ref:'RestaurantCategory',
       required: true}],
     user:  { type: mongoose.Schema.Types.ObjectId, ref:'User',
-      required: true}
+      required: true},
+      rating: {type: String},
+      priceRating: {type: String},
+      deliveryTime: {type: String},
+      deliveryCost: {type: String},
+      coordinates: {
+        type: [Number],
+        index: '2dsphere'
+      },
+      location: {
+        type: {
+          type: String,
+          enum: ['Point']
+        }},
+
 },
+{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }},
 {
     toJSON: { virtuals: true },
     toObject: { virtuals: true } 
