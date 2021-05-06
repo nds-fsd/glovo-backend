@@ -30,7 +30,7 @@ exports.findOne = (req, res) => {
 // * Restaurant controller updated to work with JWT
 exports.create = (req, res) => {
     const data = req.body;
-
+    console.log(data)
     // * error to confirm we have a user
     if(!data.user) {
         return res.status(400).json({message: 'user not Found'})
@@ -139,4 +139,43 @@ exports.search = (req, res) => {
             if (error) return res.status(500).json({ message: error });
             res.status(200).json(restaurant);
         })   
+}
+
+exports.researchA = (req, res) => {
+    const data = req.body;
+
+    const searchText = Object.keys(data)
+    .reduce((acc, cur) => (`${acc} ${data[cur]}`), '')
+
+    const query = {$text: { $search: searchText }};
+
+    console.log(query);
+
+    Restaurant.find(query, {score: {$meta: "textScore"}})
+    .sort({score: {$meta: "textScore"}})
+    .then(objects => {
+        res.status(200).json(objects);
+    })
+    .catch(error => {
+        res.status(500).json(error);
+    })
+}
+
+exports.researchB = (req, res) => {
+    
+    const searchTextReg = req.body.search.split(' ')
+    .reduce((acc, cur) => (`${acc}.*${cur}`), '');
+
+    const reg = new RegExp(searchTextReg);
+    console.log("searchTextReg", searchTextReg);
+    console.log("reg",reg);
+    const query2 = {name: { $regex: reg}};
+
+    Restaurant.find(query2)
+    .then(objects => {
+        res.status(200).json(objects);
+    })
+    .catch(error => {
+        res.status(500).json(error)
+    })
 }
