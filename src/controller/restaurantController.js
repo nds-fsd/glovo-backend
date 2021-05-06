@@ -72,7 +72,7 @@ exports.create = (req, res) => {
                        error: err
                    });
                }
-                   if (!restaurant) return res.status(201).json({message: "new Restaurant created successfully", newRestaurant})
+                return res.status(201).json({message: "new Restaurant created successfully", newRestaurant})
             })
        })
     })
@@ -134,10 +134,9 @@ exports.search = (req, res) => {
     const data = req.body;
 
     Restaurant.find(data)
-        .then(objects => {
-            res.status(200).json(objects);
-        })
-        .catch(error => {
-            res.status(500).json(error);
-        });
+    .populate('restaurantCategory')
+        .exec((error, restaurant) => {
+            if (error) return res.status(500).json({ message: error });
+            res.status(200).json(restaurant);
+        })   
 }
