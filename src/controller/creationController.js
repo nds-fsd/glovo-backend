@@ -19,7 +19,7 @@ const arrCategory = ["6064745fced74e7c6b917d01", "6064746bced74e7c6b917d04", "60
 
 exports.createRes = (req, res) =>{
     const data = req.body
-    arrCategory.map((cat)=>{
+    arrCategory.map((cat, index)=>{
     RestaurantCategory.findById(cat)
     .then(category => {
         const newRestaurant = new Restaurant({
@@ -32,7 +32,7 @@ exports.createRes = (req, res) =>{
                 street: `${streets[ranInd]}`,
                 zipcode: `${Math.floor(Math.random() * (19000 - 10000) + 10000)}`
             },
-            restaurantCategory: category._id,
+            restaurantCategory: [category._id, arrCategory[index + 1]],
             user: data.userId,
             rating: ranGrade,
             priceRating: priceRating(),
