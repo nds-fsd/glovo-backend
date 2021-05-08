@@ -91,7 +91,10 @@ const configureSecurity = (app) => {
          '/login',
          '/register',
          '/restaurantCategory',
-         '/restaurant'
+         '/restaurant',
+         '/restaurantCategory/nameSearch',
+         '/restaurant/researchA',
+         '/restaurant/researchB',
         ]}))
 }
 
