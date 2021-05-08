@@ -42,7 +42,7 @@ restaurantSchema.virtual('courseList', {
     options: { sort: { order: 1 }}
   });
 
-    schema.index({name:'text', restaurantDescription:'text'})
+    restaurantSchema.index({name:'text', restaurantDescription:'text'})
     
     const Restaurant = mongoose.model("Restaurant", restaurantSchema);
 
