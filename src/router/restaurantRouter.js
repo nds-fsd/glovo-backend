@@ -9,7 +9,7 @@ RestaurantRouter.get('/:id', RestaurantController.findOne);
 
 RestaurantRouter.post('/', RestaurantController.create);
 
-RestaurantRouter.put('/:id', RestaurantController.update);
+RestaurantRouter.patch('/:id', RestaurantController.update);
 
 RestaurantRouter.post('/search', RestaurantController.search);
 
