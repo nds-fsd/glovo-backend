@@ -72,7 +72,7 @@ exports.create = (req, res) => {
                        error: err
                    });
                }
-                   if (!restaurant) return res.status(201).json({message: "new Restaurant created successfully", newRestaurant})
+                return res.status(201).json({message: "new Restaurant created successfully", newRestaurant})
             })
        })
     })
@@ -130,16 +130,39 @@ exports.update = (req, res) => {
         })
 }
 
-exports.search = (req, res) => {
+exports.search = async (req, res) => {
     const data = req.body;
+    const page = Math.max(0, req.query.page);
+    const limit = Math.max(1, req.query.limit);
+    const sort = req.query.sort;
+    const sortDirection = req.query.dir || 'asc';
+    const skip = page * limit;
+    let sortObject = {};
+    let query = data;
+    if (sort && sortDirection) {
+        sortObject[sort] = sortDirection === 'asc' ? 1 : -1;
+    }
 
-    Restaurant.find(data)
-        .then(objects => {
-            res.status(200).json(objects);
-        })
-        .catch(error => {
-            res.status(500).json(error);
-        });
+    
+    if(data.name) {
+        const searchTextReg = data.name.split(' ')
+        .reduce((acc, cur) => (`${acc}.*${cur}`), '');
+        
+        const reg = new RegExp(searchTextReg, "i");
+        query.name = { $regex: reg}
+        
+    }
+    const restCount = await Restaurant.find(query).countDocuments();
+
+    Restaurant.find(query)
+    .limit(limit)
+    .skip(skip)
+    .sort(sortObject)
+    .populate('restaurantCategory')
+        .exec((error, restaurant) => {
+            if (error) return res.status(500).json({ message: error });
+            res.status(200).json({count: restCount, list: restaurant});
+        })   
 }
 
 exports.researchA = (req, res) => {
