@@ -24,7 +24,7 @@ authRouter.post('/register',(req,res) => {
             email: data.email,
             password: data.password,
             firstName: data.firstName,
-            role: "CLIENT",
+            role: 'PROVIDER',
           })
           
         newUser.save()
@@ -85,7 +85,17 @@ authRouter.post('/login', async (req,res) => {
 })
 
 const configureSecurity = (app) => {
-    app.use('/',jwtMiddleware({secret: jwtSecret, algorithms: ['HS256'] }).unless( { path: [ '/login', '/register']}))
+    app.use('/',jwtMiddleware({secret: jwtSecret, algorithms: ['HS256'] })
+    .unless( {
+        path: [
+         '/login',
+         '/register',
+         '/restaurantCategory',
+         '/restaurant',
+         '/restaurantCategory/nameSearch',
+         '/restaurant/researchA',
+         '/restaurant/researchB',
+        ]}))
 }
 
 module.exports = {

@@ -1,5 +1,4 @@
 const express = require('express');
-const { User } = require('../mongo');
 const { UserRouter } = require('./userRouter');
 const { RestaurantCategoryRouter } = require('./restaurantCategoryRouter');
 const { RestaurantRouter } = require('./restaurantRouter');
