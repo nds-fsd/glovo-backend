@@ -143,16 +143,16 @@ exports.search = async (req, res) => {
         sortObject[sort] = sortDirection === 'asc' ? 1 : -1;
     }
 
-    const restCount = await Restaurant.find(data).countDocuments();
-
+    
     if(data.name) {
         const searchTextReg = data.name.split(' ')
-    .reduce((acc, cur) => (`${acc}.*${cur}`), '');
-
-    const reg = new RegExp(searchTextReg, "i");
-    query.name = { $regex: reg}
-
+        .reduce((acc, cur) => (`${acc}.*${cur}`), '');
+        
+        const reg = new RegExp(searchTextReg, "i");
+        query.name = { $regex: reg}
+        
     }
+    const restCount = await Restaurant.find(query).countDocuments();
 
     Restaurant.find(query)
     .limit(limit)
