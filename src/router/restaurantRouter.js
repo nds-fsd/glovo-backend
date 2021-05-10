@@ -9,9 +9,11 @@ RestaurantRouter.get('/:id', RestaurantController.findOne);
 
 RestaurantRouter.post('/', RestaurantController.create);
 
-RestaurantRouter.put('/:id', RestaurantController.update);
+RestaurantRouter.patch('/:id', RestaurantController.update);
 
 RestaurantRouter.post('/search', RestaurantController.search);
+
+RestaurantRouter.post('/researchA', RestaurantController.researchA);
 
 RestaurantRouter.delete('/:id', RestaurantController.delete);
 

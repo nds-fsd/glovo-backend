@@ -6,14 +6,21 @@ const descriptions = ["description 1","description 2","description 3","descripti
 const courses = ["course 1","course 2","course 3","course 4","course 5"]
 const dishes = ["dish 1","dish 2","dish 3","dish 4","dish 5"]
 const ranInd = Math.floor(Math.random() * descriptions.length);
-
+const ranGrade = Math.floor(Math.random() * 6);
+const priceRating = () => {if ( ranGrade === 1 || ranGrade === 3) {
+    return "$$" 
+    } else if (ranGrade === 2 || ranGrade === 3) {
+        return "$$$"
+    } else { return "$$$$" }};
+const arrCategory = ["6064745fced74e7c6b917d01", "6064746bced74e7c6b917d04", "60647440ced74e7c6b917d00", "60647467ced74e7c6b917d03", "60647463ced74e7c6b917d02", "6064793fcb5cbafef02ee5e2", "60647975cb5cbafef02ee5e4", "6064795ccb5cbafef02ee5e3"]
 
 // with an ID passed in the body as {category: id of the restocategory}
 //This Controller creates a Random Restaurant with 5 Courses and 5 dishes on each.
 
 exports.createRes = (req, res) =>{
     const data = req.body
-    RestaurantCategory.findById(data.category)
+    arrCategory.map((cat, index)=>{
+    RestaurantCategory.findById(cat)
     .then(category => {
         const newRestaurant = new Restaurant({
 
@@ -25,7 +32,12 @@ exports.createRes = (req, res) =>{
                 street: `${streets[ranInd]}`,
                 zipcode: `${Math.floor(Math.random() * (19000 - 10000) + 10000)}`
             },
-            restaurantCategory: category._id,
+            restaurantCategory: [category._id, arrCategory[index + 1]],
+            user: data.userId,
+            rating: ranGrade,
+            priceRating: priceRating(),
+            deliveryTime: "35-45′",
+            deliveryCost: "4,99 €"
         })
         newRestaurant.save((err) => {
             if (err) return Promise.reject('Error Creating Restaurant', err);
@@ -55,5 +67,5 @@ exports.createRes = (req, res) =>{
     .catch((err) => {
         res.status(500).json({message: err})
     })
-    
+})  
 }

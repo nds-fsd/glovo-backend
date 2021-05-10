@@ -27,9 +27,11 @@ exports.create = (req, res) => {
   Course.findById(data.Course)
   .then(course => {
     if(!data.name) return Promise.reject('Missing Dish Name');
+    console.log(course)
     const newDish = new Dish({
       name: data.name, 
       price: data.price,
+      description: data.description,
       Course: course._id,
       Restaurant: course.Restaurant,
     })
@@ -90,5 +92,19 @@ exports.switchCourse = (req,res) => {
       res.status(200).json({message: 'task updated', dish})
     })
   })
-  
+}
+
+exports.dishesOrder = (req,res) => {
+  const { course, newOrder } = req.body;
+
+  if ( !course ) {
+    return res.status(400).json({message: 'missing course or restaurant'})
+  }
+  newOrder.forEach((dish) => {
+    Dish.findById(dish.id, function (err, doc) {
+      if (err) return res.status(500).json({message: 'ALgo fallo'})
+      doc.order = dish.newPos;
+      doc.save();
+    });
+    })
 }
