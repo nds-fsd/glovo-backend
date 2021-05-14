@@ -7,7 +7,8 @@ const schema = new mongoose.Schema({
     description: {type: String},
     Course: { type: mongoose.Schema.Types.ObjectId, required: true },
     Restaurant: { type: mongoose.Schema.Types.ObjectId, required: true },
-});
+},{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }},
+);
     
     
     
