@@ -4,17 +4,18 @@ const { OrdersController } = require("../controller");
 
 const OrdersRouter = express.Router();
 
+OrdersRouter.get("/search", OrdersController.search);
+
 OrdersRouter.get("/", OrdersController.findAll);
 
 OrdersRouter.get("/:id", OrdersController.findOne);
 
 OrdersRouter.post("/", OrdersController.create);
 
-OrdersRouter.put("/:id", OrdersController.update);
+OrdersRouter.patch("/:id", OrdersController.update);
 
 OrdersRouter.delete("/:id", OrdersController.deleteOrder);
 
-OrdersRouter.get("/search", OrdersController.search);
 
 
 module.exports = { OrdersRouter };

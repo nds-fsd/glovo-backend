@@ -21,12 +21,17 @@ exports.findOne = (req, res) => {
     });
 };
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   const data = req.body;
   if (!data.Restaurant) {
     return res.status(400).json({ message: "Restaurant not Provided" });
   }
+  const ordersTotal = await Order.find({
+    Restaurant: data.Restaurant,
+  }).countDocuments();
+
   const newOrder = new Order({
+    orderNumber: `Order Number ${ordersTotal + 1}`,
     User: data.User,
     Restaurant: data.Restaurant,
     orderList: data.orderList,
@@ -66,10 +71,9 @@ exports.update = (req, res) => {
     order.status = !order.status;
     order.save();
   })
-    .then((order) => {
+    .then((ord) => {
       res.status(200).json({
         message: "Your Order has been updated Succesfully",
-        order,
       });
     })
     .catch((error) => {
@@ -79,13 +83,19 @@ exports.update = (req, res) => {
 
 exports.search = async (req, res) => {
   const restaurant = req.query.restaurant;
+  const status = req.query.status;
   const page = Math.max(0, req.query.page);
   const limit = Math.max(1, req.query.limit);
   const sort = req.query.sort;
   const sortDirection = req.query.dir || "dsc";
   const skip = page * limit;
   let sortObject = {};
-  let query = { restaurant };
+  let query = { Restaurant: restaurant };
+
+  
+  if (status === 'true' || status === 'false'  ) {
+    query.status = status;
+  }
   if (sort && sortDirection) {
     sortObject[sort] = sortDirection === "dsc" ? -1 : 1;
   }
@@ -96,9 +106,10 @@ exports.search = async (req, res) => {
     .limit(limit)
     .skip(skip)
     .sort(sortObject)
-    .populate('Dish')
-        .exec((error, orders) => {
-            if (error) return res.status(500).json({ message: error });
-            res.status(200).json({count: ordersCount, list: orders});
-        }) 
+    .then((orders) => {
+      return res.status(200).json({ count: ordersCount, list: orders });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: err });
+    });
 };
