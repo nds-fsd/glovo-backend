@@ -68,16 +68,39 @@ exports.update = (req,res) => {
   })
 }
 
-exports.search = (req, res) => {
-  const data = req.body;
+exports.search = async (req, res) => {
+    const data = req.body;
+    const page = Math.max(0, req.query.page);
+    const limit = Math.max(1, req.query.limit);
+    const sort = req.query.sort;
+    const sortDirection = req.query.dir || 'asc';
+    const skip = page * limit;
+    let sortObject = {};
+    let query = data;
+    if (sort && sortDirection) {
+        sortObject[sort] = sortDirection === 'asc' ? 1 : -1;
+    }
   
-  Dish.find(data)
-  .then(dish => {
-    res.status(200).json(dish);
-  })
-  .catch(error => {
-    res.status(500).json(error);
-  });
+    
+    if(data.name) {
+        const searchTextReg = data.name.split(' ')
+        .reduce((acc, cur) => (`${acc}.*${cur}`), '');
+        
+        const reg = new RegExp(searchTextReg, "i");
+        query.name = { $regex: reg}
+    }
+    const dishCount = await Dish.find(query).countDocuments();
+  
+    Dish.find(query)
+    .limit(limit)
+    .skip(skip)
+    .sort(sortObject)
+    .then((dishes) => {
+      return res.status(200).json({count: dishCount, list: dishes})
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: err });
+    })
 }
 //recieves {newCourse: 'the collection where to move', dishId: 'the id of the moving dish'}
 exports.switchCourse = (req,res) => {
