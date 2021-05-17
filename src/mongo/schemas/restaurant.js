@@ -30,8 +30,8 @@ const restaurantSchema = new mongoose.Schema({
         image: {type: String}
 
 },
-{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }},
 {
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
     toJSON: { virtuals: true },
     toObject: { virtuals: true } 
   });

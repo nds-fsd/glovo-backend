@@ -24,6 +24,9 @@ exports.findOne = (req, res) =>{
 
 exports.create = (req, res) => {
   const data = req.body;
+  if(!data.Restaurant) {
+      return res.status(500).json({message: error})
+  }
   Restaurant.findById(data.Restaurant)
   .then(restaurant => {
     if(!data.name) return Promise.reject('Missing name of Course');
@@ -89,16 +92,39 @@ exports.update = (req,res) => {
   })
 }
 
-exports.search = (req, res) => {
+exports.search = async (req, res) => {
   const data = req.body;
+  const page = Math.max(0, req.query.page);
+  const limit = Math.max(1, req.query.limit);
+  const sort = req.query.sort;
+  const sortDirection = req.query.dir || 'asc';
+  const skip = page * limit;
+  let sortObject = {};
+  let query = data;
+  if (sort && sortDirection) {
+      sortObject[sort] = sortDirection === 'asc' ? 1 : -1;
+  }
+
   
-  Course.find(data)
-  .then(course => {
-    res.status(200).json(course);
+  if(data.name) {
+      const searchTextReg = data.name.split(' ')
+      .reduce((acc, cur) => (`${acc}.*${cur}`), '');
+      
+      const reg = new RegExp(searchTextReg, "i");
+      query.name = { $regex: reg}
+  }
+  const courseCount = await Course.find(query).countDocuments();
+
+  Course.find(query)
+  .limit(limit)
+  .skip(skip)
+  .sort(sortObject)
+  .then((courses) => {
+    return res.status(200).json({count: courseCount, list: courses})
   })
-  .catch(error => {
-    res.status(500).json(error);
-  });
+  .catch((err) => {
+    return res.status(500).json({ message: err });
+  })
 }
 
 exports.coursesWithDishes = (req, res) => {
