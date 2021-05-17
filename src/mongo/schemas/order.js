@@ -10,11 +10,7 @@ const orderSchema = new mongoose.Schema({
     }],
     status: {type: Boolean, required: true, default: false},
     total: {type: Number, required: true}
-},{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }},
-{
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true } 
-  });
+},{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
     
   orderSchema.plugin(require('mongoose-autopopulate'));
 
