@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
+const multer = require('multer')
 const databaseHost = process.env.DATABASE_HOST || 'localhost';
 const databasePort = process.env.DATABASE_PORT || '27017';
 const databaseName = process.env.DATABASE_NAME || 'app';

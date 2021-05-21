@@ -27,6 +27,7 @@ const restaurantSchema = new mongoose.Schema({
           type: String,
           enum: ['Point']
         }},
+        image: {type: String}
 
 },
 {
