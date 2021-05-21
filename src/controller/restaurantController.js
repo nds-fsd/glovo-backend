@@ -30,7 +30,7 @@ exports.findOne = (req, res) => {
 // * Restaurant controller updated to work with JWT
 exports.create = (req, res) => {
     const data = req.body;
-    console.log(data)
+    console.log(data.img)
     // * error to confirm we have a user
     if(!data.user) {
         return res.status(400).json({message: 'user not Found'})
@@ -42,7 +42,6 @@ exports.create = (req, res) => {
             return res.status(500).json({user: err.message})
         }
 
-        // * if the user has already a restaurant, he cant create more
        Restaurant.findOne({user: user._id},(err,restaurant) => {
            if (err) {
                return res.status(500).json({message: error});
@@ -62,8 +61,11 @@ exports.create = (req, res) => {
                        street: data.address.street,
                        zipcode: data.address.zipcode
                    },
+                   coordinates: data.coordinates,
+                   image: data.image,
                    restaurantCategory: data.restaurantCategory,
-                   user: user._id
+                   user: user._id,
+                   fullAddress: data.fullAddress
                })
                newRestaurant.save((err)=>{
                    if (err){ 
