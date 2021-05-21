@@ -42,7 +42,6 @@ exports.create = (req, res) => {
             return res.status(500).json({user: err.message})
         }
 
-        // * if the user has already a restaurant, he cant create more
        Restaurant.findOne({user: user._id},(err,restaurant) => {
            if (err) {
                return res.status(500).json({message: error});
@@ -62,9 +61,11 @@ exports.create = (req, res) => {
                        street: data.address.street,
                        zipcode: data.address.zipcode
                    },
+                   coordinates: data.coordinates,
+                   image: data.image,
                    restaurantCategory: data.restaurantCategory,
                    user: user._id,
-                   image: data.img
+                   fullAddress: data.fullAddress
                })
                newRestaurant.save((err)=>{
                    if (err){ 
