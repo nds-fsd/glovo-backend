@@ -35,6 +35,7 @@ authRouter.post('/register',(req,res) => {
                      email: createdUser.email,
                      name: createdUser.name, 
                      id: createdUser._id,
+                     address: user.address,
                 },
                 role: createdUser.role
             })
@@ -66,7 +67,7 @@ authRouter.post('/login', async (req,res) => {
         }
         // * Validate password with bcrypt library
         if (!user.comparePassword(password)) {
-            return res.status(400).json( { error: { password: "Unvalid Password"}})
+            return res.status(400).json( { error: { password: "Invalid Password"}})
         }
         // * if everything is ok, return the new token and user data
         return res.status(200).json({
@@ -75,6 +76,7 @@ authRouter.post('/login', async (req,res) => {
                  email: user.email,
                  name: user.name,
                  id: user._id,
+                 address: user.address,
             },
             role: user.role,
         })
