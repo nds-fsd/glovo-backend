@@ -4,8 +4,10 @@ const courseSchema = new mongoose.Schema({
     name: {type: String, required: true},
     Restaurant: { type: mongoose.Schema.Types.ObjectId, required: true },
     order: {type: Number, default: -1},
+    
 },
 {
+    timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
     toJSON: { virtuals: true },
     toObject: { virtuals: true } 
   });

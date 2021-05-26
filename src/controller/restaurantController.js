@@ -1,4 +1,5 @@
 const { Restaurant, RestaurantCategory, Course, Dish, User } = require('../mongo');
+//const cloudinary = require('cloudinary');
 
 exports.findAll = (req, res) => {
 
@@ -30,8 +31,9 @@ exports.findOne = (req, res) => {
 // * Restaurant controller updated to work with JWT
 exports.create = (req, res) => {
     const data = req.body;
-    console.log(data)
     // * error to confirm we have a user
+    // cloudinaryImgUpload(data.image);
+
     if(!data.user) {
         return res.status(400).json({message: 'user not Found'})
     }
@@ -42,7 +44,6 @@ exports.create = (req, res) => {
             return res.status(500).json({user: err.message})
         }
 
-        // * if the user has already a restaurant, he cant create more
        Restaurant.findOne({user: user._id},(err,restaurant) => {
            if (err) {
                return res.status(500).json({message: error});
@@ -62,8 +63,11 @@ exports.create = (req, res) => {
                        street: data.address.street,
                        zipcode: data.address.zipcode
                    },
+                   coordinates: data.coordinates,
+                   image: data.image,
                    restaurantCategory: data.restaurantCategory,
-                   user: user._id
+                   user: user._id,
+                   fullAddress: data.fullAddress
                })
                newRestaurant.save((err)=>{
                    if (err){ 
@@ -197,3 +201,8 @@ exports.researchA = (req, res) => {
         res.status(500).json(error);
     })
 }
+
+// const cloudinaryImgUpload = (imgString) => {
+//     console.log(imgString);
+//     cloudinary.uploader.upload(imgString, function(error, result) {console.log(result, error)});
+// }
