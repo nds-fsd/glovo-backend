@@ -27,13 +27,14 @@ exports.create = (req, res) => {
   Course.findById(data.Course)
   .then(course => {
     if(!data.name) return Promise.reject('Missing Dish Name');
-    console.log(course)
+    console.log(data)
     const newDish = new Dish({
       name: data.name, 
       price: data.price,
       description: data.description,
       Course: course._id,
       Restaurant: course.Restaurant,
+      img: data.img,
     })
     newDish.save();
   })
