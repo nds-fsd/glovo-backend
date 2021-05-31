@@ -35,7 +35,7 @@ authRouter.post('/register',(req,res) => {
                      email: createdUser.email,
                      name: createdUser.name, 
                      id: createdUser._id,
-                     address: user.address,
+                     address: createdUser.address,
                 },
                 role: createdUser.role
             })
