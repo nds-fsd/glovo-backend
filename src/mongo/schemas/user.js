@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 
-const roles = ['CLIENT','PROVIDER']
+const roles = ['CLIENT','PROVIDER','SUPER_ADMIN']
 
 const userSchema = new mongoose.Schema({
 	email: { type: String, required: true, unique: true, trim: true},
