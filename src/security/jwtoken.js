@@ -24,7 +24,7 @@ authRouter.post('/register',(req,res) => {
             email: data.email,
             password: data.password,
             firstName: data.firstName,
-            role: 'PROVIDER',
+            role: 'CLIENT',
           })
           
         newUser.save()
@@ -35,7 +35,6 @@ authRouter.post('/register',(req,res) => {
                      email: createdUser.email,
                      name: createdUser.name, 
                      id: createdUser._id,
-                     address: createdUser.address,
                 },
                 role: createdUser.role
             })
