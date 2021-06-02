@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
 		zipcode:{type: Number}
 	},
 	role: {type: String, required: true},
+	coordinates: {
+		lat: { type: String },
+		lng: { type: String },
+	  },
+	  image: { type: String },
+	  fullAddress: { type: String },
 }, {timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }},
 {
     toJSON: { virtuals: true },
