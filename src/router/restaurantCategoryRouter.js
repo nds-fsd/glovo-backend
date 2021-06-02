@@ -10,7 +10,7 @@ RestaurantCategoryRouter.get('/:id', RestaurantCategoryController.findOne);
 
 RestaurantCategoryRouter.post('/', RestaurantCategoryController.create);
 
-RestaurantCategoryRouter.put('/:id', RestaurantCategoryController.update);
+RestaurantCategoryRouter.patch('/:id', RestaurantCategoryController.update);
 
 RestaurantCategoryRouter.delete('/:id', RestaurantCategoryController.delete);
 
