@@ -10,7 +10,7 @@ CourseRouter.get("/:id", CourseController.findOne);
 
 CourseRouter.post("/", CourseController.create);
 
-CourseRouter.put("/:id", CourseController.update);
+CourseRouter.patch("/:id", CourseController.update);
 
 CourseRouter.delete("/:id", CourseController.deleteCourse);
 
