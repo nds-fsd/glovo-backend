@@ -95,6 +95,8 @@ const configureSecurity = (app) => {
          '/restaurantCategory/nameSearch',
          '/restaurant/researchA',
          '/restaurant/researchB',
+        {url: /^\/restaurant\/.*/},
+        {url: /^\/course\/all\/.*/},
         ]}))
 }
 
