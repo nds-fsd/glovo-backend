@@ -6,7 +6,6 @@ app.use(cors())
 const bodyParser = require("body-parser");
 const { configureSecurity, authRouter } = require('./security/jwtoken');
 // const mailer = require('./mailer');
-
 const server = app.listen(process.env.PORT, () => {
 	console.log('server is running on port', server.address().port);
 });

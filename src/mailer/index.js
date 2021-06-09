@@ -1,7 +1,7 @@
 // const nodemailer = require("nodemailer");
-// const express = require("express");
 // const ejs = require("ejs");
 // require("dotenv").config();
+
 
 // async function wrapedSendMail(mailOptions) {
 
@@ -16,6 +16,9 @@
 // 			},
 // 			secure: true,
 // 		});
+
+//         mailOptions.from = env.THE_EMAIL;
+
 // 		transporter.sendMail(mailOptions, function (error, info) {
 // 			if (error) {
 // 				throw new Error(error);
@@ -34,8 +37,7 @@
 // 			subject,
 // 			html
 // 		};
-// 		const response = wrapedSendMail(mailData);
-// 		return response;
+// 		return wrapedSendMail(mailData);
 // };
 
 // module.exports = {
