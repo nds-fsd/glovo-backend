@@ -36,7 +36,8 @@ exports.create = (req, res) => {
       Restaurant: course.Restaurant,
       img: data.img,
     })
-    newDish.save();
+    console.log('llego al segundo log')
+    newDish.save((error) => {error => { res.status(500).json({aquisecaga: error})}});
   })
   .then((newDish)=> { res.status(201).json({Message: "Your new dish was created Succesfully", newDish})})
   .catch(error => { res.status(500).json({message: error})});
