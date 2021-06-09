@@ -68,16 +68,37 @@ exports.update = (req, res) => {
         })
 }
 
-exports.search = (req, res) => {
+exports.search = async (req, res) => {
     const data = req.body;
-
-    RestaurantCategory.find(data)
-        .then(objects => {
-            res.status(200).json(objects);
-        })
-        .catch(error => {
-            res.status(500).json(error);
-        });
+    const page = Math.max(0, req.query.page);
+    const limit = Math.max(1, req.query.limit);
+    const sort = req.query.sort;
+    const sortDirection = req.query.dir || 'asc';
+    const skip = page * limit;
+    let sortObject = {};
+    let query = data;
+    if (sort && sortDirection) {
+        sortObject[sort] = sortDirection === 'asc' ? 1 : -1;
+    }
+    if(data.name) {
+        const searchTextReg = data.name.split(' ')
+        .reduce((acc, cur) => (`${acc}.*${cur}`), '');
+        
+        const reg = new RegExp(searchTextReg, "i");
+        query.name = { $regex: reg}
+        
+    }
+    const categoryCount = await RestaurantCategory.find(query).countDocuments();
+    RestaurantCategory.find(query)
+    .limit(limit)
+    .skip(skip)
+    .sort(sortObject)
+    .then((categories) => {
+        return res.status(200).json({count: categoryCount, list: categories})
+      })
+      .catch((err) => {
+        return res.status(500).json({ message: err });
+      })
 }
 
 exports.nameSearch = (req, res) => {
