@@ -199,7 +199,7 @@ a[x-apple-data-detectors='true'] {
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-      <img align="center" border="0" src="images/image-2.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 580px;" width="580"/>
+      <img align="center" border="0" src="http://res.cloudinary.com/partycloud/image/upload/v1623271895/bnwcfdy0kuqe7xiu4bud.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 580px;" width="580"/>
       
     </td>
   </tr>
@@ -216,7 +216,7 @@ a[x-apple-data-detectors='true'] {
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:georgia,palatino;" align="left">
         
   <div style="color: #3d3030; line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><span style="line-height: 22.4px; font-size: 16px;">H E L L O&nbsp; T H E R E !&nbsp;<%= data.name %></span></span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 16px; line-height: 22.4px;"><span style="line-height: 22.4px; font-size: 16px;">H E L L O&nbsp; T H E R E !&nbsp; <%= data.name %></span></span></p>
   </div>
 
       </td>
@@ -317,7 +317,7 @@ a[x-apple-data-detectors='true'] {
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
       
-      <img align="center" border="0" src="images/image-1.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 600px;" width="600"/>
+      <img align="center" border="0" src="http://res.cloudinary.com/partycloud/image/upload/v1623271912/rpsnnkxmh8jxrdsung82.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 600px;" width="600"/>
       
     </td>
   </tr>

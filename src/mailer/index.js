@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
-const singUpHTML = require('../mailer/htmlTemplates/singUpTemplate');
+const signUpHTML = require('./htmlTemplates/signUpTemplate');
 const orderCompleteHTML = require('../mailer/htmlTemplates/orderCompleteTemplate');
+const restaurantOrder = require('../mailer/htmlTemplates/restaurantOrder');
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
@@ -28,7 +29,7 @@ function wrapedSendMail(mailOptions) {
 	})
 }
 const sendSignUpEmail = (data, toEmail) => {
-	const html = ejs.render(singUpHTML, {data});
+	const html = ejs.render(signUpHTML, {data});
 	const mailData = {
 		to: toEmail,
 		html,
@@ -47,10 +48,21 @@ const sendOrderCompleteEmail = (data, toEmail) => {
 
 	return wrapedSendMail(mailData);
 }
+const sendOrderCompleteEmailProvider = (data, toEmail) => {
+	const html = ejs.render(restaurantOrder, {data});
+	const mailData = {
+		to: toEmail,
+		html,
+		subject: "You have a new Order!",
+	};
+
+	return wrapedSendMail(mailData);
+}
 
 
 
 module.exports = {
 	sendSignUpEmail,
-    sendOrderCompleteEmail
+    sendOrderCompleteEmail,
+    sendOrderCompleteEmailProvider
 }

@@ -1,4 +1,5 @@
-const { Order } = require("../mongo");
+const { Order, Restaurant, User } = require("../mongo");
+const { sendOrderCompleteEmail, sendOrderCompleteEmailProvider } = require("../mailer/index");
 
 exports.findAll = (req, res) => {
   const handleSuccess = (courses) => {
@@ -38,6 +39,21 @@ exports.create = async (req, res) => {
     status: false,
     total: data.total,
   });
+
+  const selectedRestaurant = await Restaurant.findById(data.Restaurant);
+  const client = await User.findById(data.User);
+  const provider = await User.findById(selectedRestaurant.user)
+  
+  const clientData = {
+      name: client.firstName,
+      restaurant: selectedRestaurant.name
+  }
+  const providerData = {
+      order: `number ${ordersTotal + 1}`,
+      restaurant: selectedRestaurant.name
+  }
+  sendOrderCompleteEmailProvider(providerData, provider.email);
+  sendOrderCompleteEmail(clientData, client.email);
   newOrder
     .save()
     .then((newOrder) => {
@@ -92,8 +108,7 @@ exports.search = async (req, res) => {
   let sortObject = {};
   let query = { Restaurant: restaurant };
 
-  
-  if (status === 'true' || status === 'false'  ) {
+  if (status === "true" || status === "false") {
     query.status = status;
   }
   if (sort && sortDirection) {
