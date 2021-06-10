@@ -3,6 +3,7 @@ const jwtMiddleware = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../mongo');
 const jwtSecret = process.env.JWT_SECRET;
+const { sendSignUpEmail } = require('../mailer/index');
 
 const authRouter = express.Router();
 
@@ -26,7 +27,10 @@ authRouter.post('/register',(req,res) => {
             firstName: data.firstName,
             role: 'CLIENT',
           })
-          
+          const dataMail = {
+              name: data.firstName
+          }
+          sendSignUpEmail(dataMail, data.email);
         newUser.save()
         .then((createdUser => {
             return res.status(201).json({
